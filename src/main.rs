@@ -9,6 +9,8 @@ fn main() {
 
     // guess only once; not for every loop
     let system_guess = rand::thread_rng().gen_range(1..101);
+    // number of tries starts at 1
+    let mut num_of_attempts: u32 = 1;
     // display the random guess
     // println!("System guess: {system_guess}");
     println!("{}", "Type a number between 1 and 100".bold().yellow());
@@ -46,11 +48,17 @@ fn main() {
         // use match to handle to diff. comparisons
         match user_guess.cmp(&system_guess) {
             Ordering::Equal => {
-                println!("{}", "You won!".bold().green());
+                println!("{} Attempts: {num_of_attempts}", "You won!".bold().green());
                 break;
             },
-            Ordering::Greater => println!("{}", "Guess too big!".bold().red()),
-            Ordering::Less => println!("{}", "Guess too low!".bold().red()),
+            Ordering::Greater => {
+                println!("{}", "Number too big!".bold().red());
+                num_of_attempts += 1;
+            },
+            Ordering::Less => {
+                println!("{}", "Number too low!".bold().red());
+                num_of_attempts += 1;
+            },
         }
     }
 
