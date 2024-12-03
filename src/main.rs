@@ -2,13 +2,14 @@ use std::io;
 use std::cmp::Ordering;
 use rand::Rng;
 use colored::*;
+pub mod validation;
 
 fn main() {
     // use colored strings from colored library
     println!("{}", "Guess Number Game!".bold().yellow());
 
     // guess only once; not for every loop
-    let system_guess = rand::thread_rng().gen_range(1..101);
+    let system_guess = rand::thread_rng().gen_range(1..=100);
     // number of tries starts at 1
     let mut num_of_attempts: u32 = 1;
     // display the random guess
@@ -43,10 +44,12 @@ fn main() {
             },
         };
 
+        let valid_guess = validation::Guess::new(user_guess);
+
         // println!("You guessed: {user_guess}");
 
         // use match to handle to diff. comparisons
-        match user_guess.cmp(&system_guess) {
+        match system_guess.cmp(&valid_guess.value()) {
             Ordering::Equal => {
                 println!("{} Attempts: {num_of_attempts}", "You won!".bold().green());
                 break;
