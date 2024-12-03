@@ -44,12 +44,18 @@ fn main() {
             },
         };
 
-        let valid_guess = validation::Guess::new(user_guess);
+        let valid_guess = match validation::Guess::new(user_guess) {
+            Ok(guess) => guess,
+            Err(e) => {
+                println!("{}", e);
+                continue;
+            }
+        };
 
         // println!("You guessed: {user_guess}");
 
         // use match to handle to diff. comparisons
-        match system_guess.cmp(&valid_guess.value()) {
+        match valid_guess.value().cmp(&system_guess) {
             Ordering::Equal => {
                 println!("{} Attempts: {num_of_attempts}", "You won!".bold().green());
                 break;
